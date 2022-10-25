@@ -26,11 +26,12 @@ export const getFreeIp = async () => {
     });
 
     let data = JSON.parse(file);
-
-    for (let i = 0; i++; i < data.adresses.length) {
-        if (data.adresses[i].free === true) {
-            data.addresses[i].free = false;
-            let ip = data.addresses[i].ip;
+    console.log(data);
+    for (let i = 0; i < data.adresses.length; i++) {
+	console.log(data.adresses[i])        
+   if (data.adresses[i].free == true) {
+            data.adresses[i].free = false;
+            let ip = data.adresses[i].ip;
             fs.writeFile(
                 `${process.cwd()}/generator/data/ip.json`,
                 JSON.stringify(data),
@@ -59,6 +60,7 @@ export const writeConnection = async (count) => {
 
     let parse = config.split("/n");
     data.ip = await getFreeIp();
+    console.log(data.ip);
 
     let tempPublic = await exec(`cat ${publicKey}`);
     let tempPrivate = await exec(`cat ${privateKey}`);

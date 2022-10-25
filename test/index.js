@@ -19,6 +19,7 @@ import { v4 } from "uuid";
 
 let exec = util.promisify(fs.readFile);
 
-let test = await exec(`ls`);
+let test = await exec(`/home/vpn/generator/data/ip.json`, {encoding: 'utf-8'});
 
-console.log(test.stdout);
+let data = JSON.parse(test);
+console.log(data)
