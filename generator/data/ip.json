@@ -1,0 +1,14 @@
+{
+    "adresses": [
+        { "ip": "10.0.0.2/32", "free": false },
+        { "ip": "10.0.0.3/32", "free": false },
+        { "ip": "10.0.0.4/32", "free": false },
+        { "ip": "10.0.0.5/32", "free": false },
+        { "ip": "10.0.0.6/32", "free": false },
+        { "ip": "10.0.0.7/32", "free": false },
+        { "ip": "10.0.0.8/32", "free": false },
+        { "ip": "10.0.0.9/32", "free": false },
+        { "ip": "10.0.0.10/32", "free": false },
+        { "ip": "10.0.0.11/32", "free": false }
+    ]
+}

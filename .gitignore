@@ -1,2 +1,4 @@
 /node_modules
 .env
+generator/data/data.json
+/generator/data/data.json
