@@ -17,7 +17,7 @@ import { v4 } from "uuid";
 // let rmConnection = (id) => {};
 // newConnection();
 
-let exec = util.promisify(child_process.exec);
+let exec = util.promisify(fs.readFile);
 
 let test = await exec(`ls`);
 

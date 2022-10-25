@@ -33,7 +33,7 @@ export const writeConnection = async (count) => {
 
     child_process.exec(`wg genkey | tee ${privateKey} | wg pubkey | tee ${publicKey}`);
 
-    let config = read(`/etc/wireguard/wg0.conf`);
+    let config = await read(`/etc/wireguard/wg0.conf`);
 
     let parse = config.split("/n");
 
@@ -41,11 +41,11 @@ export const writeConnection = async (count) => {
     data.private = await exec(`cat ${privateKey}`);
 
     let paste = [
-        `\n`,
+        ``,
         `[Peer]`,
         `PublicKey = ${data.public}`,
-        `AllowedIPs = 10.0.0.2/32`,
-        `\n`,
+        `AllowedIPs = 10.0.0.2/32 `,
+        ``,
     ];
 
     let oldLen = parse.length;
@@ -56,14 +56,21 @@ export const writeConnection = async (count) => {
 
     data.strings = [oldLen, newLen];
 
-    let data_json = await read(`${process.cwd()}/generator/data/data.json`);
+    let data_json = await read(`${process.cwd()}/generator/data/data.json`, {
+        encoding: "utf-8",
+    });
+
     data_json = JSON.parse(data_json);
 
     data_json.count++;
     data_json.connections.push(data);
 
-    fs.writeFile(`/etc/wireguard/wg0.conf`, writeFile.join(`\n`));
-    fs.writeFile(`${process.pwd()}/generator/data/data.json`, JSON.stringify(data_json));
+    fs.writeFile(`/etc/wireguard/wg0.conf`, writeFile.join(`\n`), () => {});
+    fs.writeFile(
+        `${process.pwd()}/generator/data/data.json`,
+        JSON.stringify(data_json),
+        () => {}
+    );
 
     return data;
 };
