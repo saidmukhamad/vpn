@@ -24,10 +24,12 @@ app.use((req, res, next) => {
 app.get("/new-connection", (req, res, next) => {
     console.log(req.body);
     let newConnection_ = newConnection();
-    res.json({
-        msg: "Connected successfully",
-        data: newConnection_,
-        config: `
+
+    res.json(
+        JSON.stringify({
+            msg: "Connected successfully",
+            data: newConnection_,
+            config: `
         [Interface]
         PrivateKey = ${newConnection_.public}
         Address = ${newConnection_.ip}
@@ -38,7 +40,8 @@ app.get("/new-connection", (req, res, next) => {
         Endpoint = 87.249.50.251:51830
         AllowedIPs = 0.0.0.0/0
         PersistentKeepalive = 20`,
-    });
+        })
+    );
 });
 
 app.get("/info", async (req, res, next) => {
