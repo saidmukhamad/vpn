@@ -55,12 +55,15 @@ export const writeConnection = async (count) => {
 
     child_process.exec(`wg genkey | tee ${privateKey} | wg pubkey | tee ${publicKey}`);
 
-    let config = await read(`/etc/wireguard/wg0.conf`, {encoding: 'utf-8'});
+    let config = await read(`/etc/wireguard/wg0.conf`, { encoding: "utf-8" });
 
     let parse = config.split("/n");
     data.ip = await getFreeIp();
-    data.public = await exec(`cat ${publicKey}`);
-    data.private = await exec(`cat ${privateKey}`);
+
+    let tempPublic = await exec(`cat ${publicKey}`);
+    let tempPrivate = await exec(`cat ${privateKey}`);
+    data.public = tempPublic.stdout;
+    data.private = tempPrivate.stdout;
 
     let paste = [
         ``,
