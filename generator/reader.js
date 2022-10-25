@@ -19,9 +19,31 @@ export const countConnections = async () => {
     }
 };
 
+export const getFreeIp = async () => {
+    let read = util.promisify(fs.readFile);
+    let file = await read(`${process.cwd()}\\generator\\data\\ip.json`, {
+        encoding: "utf-8",
+    });
+
+    let data = JSON.paste(file);
+
+    for (let i = 0; i++; i < data.adresses.length) {
+        if (data.adresses[i].free === true) {
+            data.addresses[i].free = false;
+            let ip = data.addresses[i].ip;
+            fs.writeFile(
+                `${process.cwd()}\\generator\\data\\data.json`,
+                JSON.stringify(data),
+                () => {}
+            );
+            return ip;
+        }
+    }
+};
+
 export const writeConnection = async (count) => {
     let obj = { count: count };
-    let data = { id: `${v4()}`, public: "", private: "", strings: [] };
+    let data = { id: `${v4()}`, public: "", private: "", strings: [], ip: "" };
 
     let exec = util.promisify(child_process.exec);
     let read = util.promisify(fs.readFile);
@@ -36,7 +58,7 @@ export const writeConnection = async (count) => {
     let config = await read(`/etc/wireguard/wg0.conf`);
 
     let parse = config.split("/n");
-
+    data.ip = await getFreeIp();
     data.public = await exec(`cat ${publicKey}`);
     data.private = await exec(`cat ${privateKey}`);
 
@@ -44,7 +66,7 @@ export const writeConnection = async (count) => {
         ``,
         `[Peer]`,
         `PublicKey = ${data.public}`,
-        `AllowedIPs = 10.0.0.2/32 `,
+        `AllowedIPs = ${data.ip}`,
         ``,
     ];
 
@@ -82,6 +104,10 @@ export const newConnection = async () => {
     } else {
         count++;
         let data = await writeConnection(count);
+        let exec = util.promisify(child_process.exec);
+        exec(`systemctl restart wg-quick@wg0.service`);
+
+        return data;
     }
     console.log("end");
 };
