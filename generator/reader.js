@@ -21,18 +21,18 @@ export const countConnections = async () => {
 
 export const getFreeIp = async () => {
     let read = util.promisify(fs.readFile);
-    let file = await read(`${process.cwd()}\\generator\\data\\ip.json`, {
+    let file = await read(`${process.cwd()}/generator/data/ip.json`, {
         encoding: "utf-8",
     });
 
-    let data = JSON.paste(file);
+    let data = JSON.parse(file);
 
     for (let i = 0; i++; i < data.adresses.length) {
         if (data.adresses[i].free === true) {
             data.addresses[i].free = false;
             let ip = data.addresses[i].ip;
             fs.writeFile(
-                `${process.cwd()}\\generator\\data\\data.json`,
+                `${process.cwd()}/generator/data/ip.json`,
                 JSON.stringify(data),
                 () => {}
             );
@@ -55,7 +55,7 @@ export const writeConnection = async (count) => {
 
     child_process.exec(`wg genkey | tee ${privateKey} | wg pubkey | tee ${publicKey}`);
 
-    let config = await read(`/etc/wireguard/wg0.conf`);
+    let config = await read(`/etc/wireguard/wg0.conf`, {encoding: 'utf-8'});
 
     let parse = config.split("/n");
     data.ip = await getFreeIp();
@@ -89,7 +89,7 @@ export const writeConnection = async (count) => {
 
     fs.writeFile(`/etc/wireguard/wg0.conf`, writeFile.join(`\n`), () => {});
     fs.writeFile(
-        `${process.pwd()}/generator/data/data.json`,
+        `${process.cwd()}/generator/data/data.json`,
         JSON.stringify(data_json),
         () => {}
     );

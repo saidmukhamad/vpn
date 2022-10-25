@@ -1,5 +1,1 @@
-{
-    "count": 0,
-    "publicKey": "",
-    "connections": []
-}
+{"count":1,"publicKey":"","connections":[{"id":"bf36f67c-693c-4b73-9545-01567d91b871","public":{"stdout":"ccx54P/Obg1PLVJCSpPUbT9OARNsjw4hR5dJcYgrlk8=\n","stderr":""},"private":{"stdout":"0AsTCcfGE2Z2wW7cF0A6VG/XdHmV7uEsBJ9jEbFp1WM=\n","stderr":""},"strings":[1,6]}]}
